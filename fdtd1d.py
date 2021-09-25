@@ -107,7 +107,5 @@ class fdtd1d(object):
             line.set_ydata(Et[i])
 
         anim = FuncAnimation(fig, animate, interval = 50, frames = len(Et) - 1)
-
-        #plt.show()
-
         anim.save(file_dir, writer = "pillow") 
+        plt.show()
