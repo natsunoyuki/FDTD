@@ -74,7 +74,7 @@ class fdtd2d_tez_laser:
                             self.mask_x[i, j] = 0
                             self.mask_y[i, j] = 0
 
-        # Permittivity and permeability
+        # Permittivity epsilon (E) and permeability mu (M)
         self.n1 = 1.0
         self.n2 = 3.0
         self.E_x = np.logical_not(self.mask_x) * self.n1**2 + self.mask_x * self.n2**2 

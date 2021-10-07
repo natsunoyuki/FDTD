@@ -55,13 +55,17 @@ class fdtd2d_tmz_laser:
         self.drill_holes = drill_holes
         if self.drill_holes == True:
             self.sub_radius = 30
-            self.centres = [[150, 170], 
-                            [165, 300],
-                            [300, 120],
-                            [225, 220],
-                            [360, 330],
-                            [320, 220],
-                            [230, 360]]
+            self.centres = [[143, 137], 
+                            [107, 254],
+                            [415, 257],
+                            [379, 165],
+                            [165, 303],
+                            [307, 122],
+                            [225, 222],
+                            [363, 328],
+                            [322, 219],
+                            [266, 389],
+                            [231,  93]]
             for c in range(len(self.centres)):
                 c_x = self.centres[c][0]
                 c_y = self.centres[c][1]
@@ -70,7 +74,7 @@ class fdtd2d_tmz_laser:
                         if np.sqrt((i - c_x)**2 + (j - c_y)**2) < self.sub_radius:
                             self.mask[i, j] = 0
         
-        # Permittivity and permeability
+        # Permittivity epsilon (E) and permeability mu (M)
         self.n1 = 1.0
         self.n2 = 3.0
         self.E = np.logical_not(self.mask) * self.n1**2 + self.mask * self.n2**2 
@@ -79,7 +83,7 @@ class fdtd2d_tmz_laser:
         # for mu. If this condition is not satisfied, then mu must be taken
         # into account as well in the simulation.
         
-        # Polarization field P
+        # Polarization field P (strictly speaking P_z)
         self.P = np.zeros([Nx, Ny])
         self.Place = np.zeros([Nx, Ny]) # polarization one time step before
         self.Pold = np.zeros([Nx, Ny]) # polarization two time steps before
@@ -92,7 +96,7 @@ class fdtd2d_tmz_laser:
         self.E_z_t = []
         self.H_x_t = []
         self.H_y_t = []
-        self.E_timeseries = []
+        self.E_z_timeseries = []
         
         # Mur absorbing boundaries
         self.E_z_n = self.E_z.copy()     # data for t = n
@@ -194,11 +198,11 @@ class fdtd2d_tmz_laser:
                 del self.H_x_t[0]
                 del self.H_y_t[0]
                 
-            self.E_timeseries.append(self.E_z[450, 450])
+            self.E_z_timeseries.append(self.E_z[450, 450])
 
     def plot_timeseries(self):
-        t = np.arange(0, self.dt * len(self.E_timeseries), self.dt)
-        plt.plot(t, self.E_timeseries)
+        t = np.arange(0, self.dt * len(self.E_z_timeseries), self.dt)
+        plt.plot(t, self.E_z_timeseries)
         plt.xlabel("Time")
         plt.ylabel("E")
         plt.grid(True)
@@ -347,4 +351,10 @@ class fdtd2d_tmz_laser:
 
         anim = FuncAnimation(fig, animate, interval = 50, frames = len(H_x_t) - 1)
         anim.save(file_dir, writer = "pillow")
+        plt.show()
+        
+    def plot_device(self):
+        plt.pcolormesh(self.X, self.Y, self.mask.T, shading = "auto", cmap = "binary")
+        plt.axis("equal")
+        plt.grid(True)
         plt.show()

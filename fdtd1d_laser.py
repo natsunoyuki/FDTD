@@ -129,7 +129,7 @@ class fdtd1d_laser(object):
             pulse = np.exp((-((n+1) * self.dt - 3 * np.sqrt(2) * self.sig)**2) / (2*self.sig**2))
             self.E_y[self.source] = self.E_y[self.source] + pulse
             
-            # 1st order Mur Boundaries for dielectric to absorb the outgoing field
+            # 1st order Mur Boundaries for dielectric to absorb the outgoing field on the left closed port
             self.E_y[-1] = self.Ezh + (self.c * self.dt - self.dx) / (self.c * self.dt + self.dx) * (self.E_y[-2] - self.E_y[-1])
             self.Ezh = self.E_y[-2]
             
