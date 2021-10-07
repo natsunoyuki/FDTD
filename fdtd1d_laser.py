@@ -149,7 +149,7 @@ class fdtd1d_laser(object):
         plt.subplot(2, 1, 1)
         rectangle = plt.Rectangle([self.die1, np.min(self.E_y)], 
                                   self.die2 - self.die1, np.max(self.E_y) - np.min(self.E_y), 
-                                  color = "k", fill = True, alpha = 0.3)
+                                  color = "y", fill = True, alpha = 0.5)
         plt.gca().add_patch(rectangle)
         plt.plot(self.x, self.E_y, 'r')
         #plt.axvline(x = self.die1, color = 'k')
@@ -159,7 +159,7 @@ class fdtd1d_laser(object):
         plt.subplot(2, 1, 2)
         rectangle = plt.Rectangle([self.die1, np.min(self.H_z)], 
                                   self.die2 - self.die1, np.max(self.H_z) - np.min(self.H_z), 
-                                  color = "k", fill = True, alpha = 0.3)
+                                  color = "y", fill = True, alpha = 0.5)
         plt.gca().add_patch(rectangle)
         plt.plot(self.Dx, self.H_z, 'g')
         #plt.axvline(x = self.die1, color = 'k')
@@ -188,10 +188,10 @@ class fdtd1d_laser(object):
 
         rectangle = plt.Rectangle([self.die1, np.min(self.H_z)], 
                                   self.die2 - self.die1, np.max(self.H_z) - np.min(self.H_z), 
-                                  color = "k", fill = True, alpha = 0.3)
+                                  color = "y", fill = True, alpha = 0.5)
         plt.gca().add_patch(rectangle)
         
-        ax.set(xlim = [-1.1 * self.x[0] , 1.1 * self.x[-1]], 
+        ax.set(xlim = [self.x[0] - 10, self.x[-1] + 10], 
                ylim = [-1.1 * np.max(np.abs(Et)), 1.1 * np.max(np.abs(Et))])
         line = ax.plot(range(len(Et[0])), Et[0], color = "r", linewidth = 2)[0]
         ax.set_xlabel("x")
@@ -209,8 +209,8 @@ class fdtd1d_laser(object):
         
     def plot_device(self):
         fig = plt.figure(figsize = (10, 5))
-        rectangle = plt.Rectangle((self.die1, -1), self.die2 - self.die1, 2, color = "k", 
-                                  fill = True, alpha = 0.3)
+        rectangle = plt.Rectangle((self.die1, -1), self.die2 - self.die1, 2, color = "y", 
+                                  fill = True, alpha = 0.5)
         plt.gca().add_patch(rectangle)
         plt.xlim([self.x[0] - 10, self.x[-1] + 10])
         plt.ylim([-1, 1])
