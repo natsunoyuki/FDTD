@@ -147,15 +147,23 @@ class fdtd1d_laser(object):
         # plot the E_y and H_z fields in space
         plt.figure(figsize = (10, 5))
         plt.subplot(2, 1, 1)
+        rectangle = plt.Rectangle([self.die1, np.min(self.E_y)], 
+                                  self.die2 - self.die1, np.max(self.E_y) - np.min(self.E_y), 
+                                  color = "k", fill = True, alpha = 0.3)
+        plt.gca().add_patch(rectangle)
         plt.plot(self.x, self.E_y, 'r')
-        plt.axvline(x = self.die1, color = 'k')
-        plt.axvline(x = self.die2, color = 'k', linestyle = '-.')
+        #plt.axvline(x = self.die1, color = 'k')
+        #plt.axvline(x = self.die2, color = 'k', linestyle = '-.')
         plt.ylabel('E_y')
         plt.grid('on')
         plt.subplot(2, 1, 2)
+        rectangle = plt.Rectangle([self.die1, np.min(self.H_z)], 
+                                  self.die2 - self.die1, np.max(self.H_z) - np.min(self.H_z), 
+                                  color = "k", fill = True, alpha = 0.3)
+        plt.gca().add_patch(rectangle)
         plt.plot(self.Dx, self.H_z, 'g')
-        plt.axvline(x = self.die1, color = 'k')
-        plt.axvline(x = self.die2, color = 'k', linestyle = '-.')
+        #plt.axvline(x = self.die1, color = 'k')
+        #plt.axvline(x = self.die2, color = 'k', linestyle = '-.')
         plt.ylabel('H_z')
         plt.xlabel("x")
         plt.grid('on')
@@ -177,17 +185,34 @@ class fdtd1d_laser(object):
         Et = self.E_t[-N:]
         
         fig, ax = plt.subplots()
-        ax.set(xlim = [self.x[0], self.x[-1]], ylim = [-np.max(np.abs(Et)), np.max(np.abs(Et))])
+
+        rectangle = plt.Rectangle([self.die1, np.min(self.H_z)], 
+                                  self.die2 - self.die1, np.max(self.H_z) - np.min(self.H_z), 
+                                  color = "k", fill = True, alpha = 0.3)
+        plt.gca().add_patch(rectangle)
+        
+        ax.set(xlim = [-1.1 * self.x[0] , 1.1 * self.x[-1]], 
+               ylim = [-1.1 * np.max(np.abs(Et)), 1.1 * np.max(np.abs(Et))])
         line = ax.plot(range(len(Et[0])), Et[0], color = "r", linewidth = 2)[0]
         ax.set_xlabel("x")
         ax.set_ylabel("Electric field")
         ax.grid(True)
-        ax.axvline(x = self.die1, color = 'k', linewidth = 2)
-        ax.axvline(x = self.die2, color = 'k', linestyle = '-.', linewidth = 2)
+        #ax.axvline(x = self.die1, color = 'k', linewidth = 2)
+        #ax.axvline(x = self.die2, color = 'k', linestyle = '-.', linewidth = 2)
 
         def animate(i):
             line.set_ydata(Et[i])
 
         anim = FuncAnimation(fig, animate, interval = 50, frames = len(Et) - 1)
         anim.save(file_dir, writer = "pillow")  
+        plt.show()
+        
+    def plot_device(self):
+        fig = plt.figure(figsize = (10, 5))
+        rectangle = plt.Rectangle((self.die1, -1), self.die2 - self.die1, 2, color = "k", 
+                                  fill = True, alpha = 0.3)
+        plt.gca().add_patch(rectangle)
+        plt.xlim([self.x[0] - 10, self.x[-1] + 10])
+        plt.ylim([-1, 1])
+        plt.grid(True)
         plt.show()
