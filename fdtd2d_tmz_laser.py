@@ -106,7 +106,7 @@ class fdtd2d_tmz_laser:
         self.H_y_n = self.H_x.copy()     # data for t = n
         self.H_y_n_1 = self.H_y_n.copy() # data for t = n-1
         
-    def run(self, n_iter = 10000):
+    def run(self, n_iter = 10000, initiate_pulse = False):
         # MB equation constants
         c1 = 1.0 / self.dt ** 2 + self.gperp / self.dt / 2.0
         c2 = 2.0 / self.dt ** 2 - self.ka ** 2 - self.gperp ** 2
@@ -146,14 +146,14 @@ class fdtd2d_tmz_laser:
             self.D = self.mask / c5*(c6*self.D + self.gpara*self.D0 + c7*self.E_z*(c8*self.P + c9*self.Pold))
             
             # Pulse at time step 
-            tp = 30
-            if n * self.dt <= tp:
-                C = (7 / 3) ** 3 * (7 / 4) ** 4
-                pulse = C * (n * self.dt / tp) ** 3 * (1 - n * self.dt / tp) ** 4
-            else:
-                pulse = 0
-                
-            self.E_z[self.source_x, self.source_y] = self.E_z[self.source_x, self.source_y] + pulse
+            if initiate_pulse == True:
+                tp = 30
+                if n * self.dt <= tp:
+                    C = (7 / 3) ** 3 * (7 / 4) ** 4
+                    pulse = C * (n * self.dt / tp) ** 3 * (1 - n * self.dt / tp) ** 4
+                else:
+                    pulse = 0
+                self.E_z[self.source_x, self.source_y] = self.E_z[self.source_x, self.source_y] + pulse
 
             # Mur ABC for top boundary
             self.E_z[0, :] = c_0 * (self.E_z[2, :] + self.E_z_n_1[0, :]) +    \

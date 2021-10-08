@@ -16,7 +16,7 @@ class fdtd1d_laser(object):
     # emplaced as the absorbing boundary conditions. Therefore the laser is
     # restricted to output only on the right side of the cavity.
     def __init__(self, Nx = 500, dx = 1, source = 99, c = 1.0, frequency = 0.1, gperp = 0.01, ka = 0.1, 
-                 die1 = 1, die2 = 301, n1 = 1, n2 = 1.5, n3 = 1, D0 = 0.04):
+                 die1 = 1, die2 = 301, n1 = 1, n2 = 1.5, n3 = 1, D0 = 1.0):
         """FDTD input arguments in CGS units:
         Nx: number of grid cells in the x direction
         dx: grid cell size
@@ -110,8 +110,11 @@ class fdtd1d_laser(object):
     
     def get_et(self):
         return self.E_t
+    
+    def clear_measure(self):
+        self.E_measure = []
 
-    def run(self, n_iter = 10000):
+    def run(self, n_iter = 10000, initiate_pulse = False):
         # Main FDTD Loop
         for n in tqdm.trange(n_iter):
             # Update P
@@ -126,8 +129,9 @@ class fdtd1d_laser(object):
             self.D[self.die1:self.die2] = 1.0 / self.c5 * (self.c6 * self.D[self.die1:self.die2] + self.gpara * self.D0 + self.c7 * self.E_y[self.die1:self.die2] * (self.c8 * self.P[self.die1:self.die2] + self.c9 * self.Pold[self.die1:self.die2]))
             
             # Initiate EM pulse
-            pulse = np.exp((-((n+1) * self.dt - 3 * np.sqrt(2) * self.sig)**2) / (2*self.sig**2))
-            self.E_y[self.source] = self.E_y[self.source] + pulse
+            if initiate_pulse == True:
+                pulse = np.exp((-((n+1) * self.dt - 3 * np.sqrt(2) * self.sig)**2) / (2*self.sig**2))
+                self.E_y[self.source] = self.E_y[self.source] + pulse
             
             # 1st order Mur Boundaries for dielectric to absorb the outgoing field on the left closed port
             self.E_y[-1] = self.Ezh + (self.c * self.dt - self.dx) / (self.c * self.dt + self.dx) * (self.E_y[-2] - self.E_y[-1])
