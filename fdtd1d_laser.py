@@ -177,7 +177,7 @@ class fdtd1d_laser(object):
         # plot the measured field in time
         plt.figure(figsize = (10, 5))
         t = np.arange(0, len(self.E_measure)*self.dt, self.dt)
-        plt.plot(t, self.E_measure)
+        plt.plot(t, self.E_measure, "r")
         plt.ylabel('E_y')
         plt.xlabel("t")
         plt.grid('on')
