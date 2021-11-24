@@ -4,7 +4,7 @@ from matplotlib.animation import FuncAnimation
 import tqdm
 
 # Usage:
-# fdtd = fdtd = fdtd1d_laser()
+# fdtd = fdtd1d_laser()
 # fdtd.run()
 # fdtd.plot()
 
