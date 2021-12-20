@@ -16,7 +16,7 @@ class fdtd1d_laser(object):
     # emplaced as the absorbing boundary conditions. Therefore the laser is
     # restricted to output only on the right side of the cavity.
     def __init__(self, Nx = 500, dx = 1, source = 99, c = 1.0, frequency = 0.1, gperp = 0.01, ka = 0.1, 
-                 die1 = 1, die2 = 301, n1 = 1, n2 = 1.5, n3 = 1, D0 = 1.0):
+                 die1 = 1, die2 = 301, n1 = 1, n2 = 1.5, n3 = 1, D0 = 10.0):
         """FDTD input arguments in CGS units:
         Nx: number of grid cells in the x direction
         dx: grid cell size
