@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-import tqdm
+#import tqdm
 
 # Usage:
 # fdtd = fdtd1d_laser()
@@ -116,7 +116,8 @@ class fdtd1d_laser(object):
 
     def run(self, n_iter = 10000, initiate_pulse = False):
         # Main FDTD Loop
-        for n in tqdm.trange(n_iter):
+        #for n in tqdm.trange(n_iter):
+        for n in range(n_iter):    
             # Update P
             self.P[self.die1:self.die2] = 1.0 / self.c1 * (self.c2 * self.P[self.die1:self.die2] - self.c3 * self.Pold[self.die1:self.die2] - self.c4 * self.E_y[self.die1:self.die2] * self.D[self.die1:self.die2])
             self.Pold = self.Place.copy() 
