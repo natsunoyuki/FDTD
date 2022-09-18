@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-#import tqdm
+import tqdm
 
 # fdtd = fdtd2d_tmz_laser()
 # fdtd.run()
@@ -106,7 +106,7 @@ class fdtd2d_tmz_laser:
         self.H_y_n = self.H_x.copy()     # data for t = n
         self.H_y_n_1 = self.H_y_n.copy() # data for t = n-1
         
-    def run(self, n_iter = 10000, initiate_pulse = False):
+    def run(self, n_iter = 10000, initiate_pulse = False, verbose = False):
         # MB equation constants
         c1 = 1.0 / self.dt ** 2 + self.gperp / self.dt / 2.0
         c2 = 2.0 / self.dt ** 2 - self.ka ** 2 - self.gperp ** 2
@@ -126,8 +126,7 @@ class fdtd2d_tmz_laser:
         c_2 = 4 * (dtdx + 1 / dtdx) / dtdx_2
         
         # FDTD Loop
-        #for n in tqdm.trange(n_iter):
-        for n in range(n_iter):    
+        for n in tqdm.trange(n_iter, disable = np.logical_not(verbose)) 
             # Update magnetic fields H_x, H_y
             self.H_x = self.H_x - self.dt / self.dy * (self.E_z[:, 1:] - self.E_z[:, :-1])
             self.H_y = self.H_y + self.dt / self.dx * (self.E_z[1:, :] - self.E_z[:-1, :])
