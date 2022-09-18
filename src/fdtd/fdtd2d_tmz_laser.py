@@ -126,7 +126,7 @@ class fdtd2d_tmz_laser:
         c_2 = 4 * (dtdx + 1 / dtdx) / dtdx_2
         
         # FDTD Loop
-        for n in tqdm.trange(n_iter, disable = np.logical_not(verbose)) 
+        for n in tqdm.trange(n_iter, disable = np.logical_not(verbose)):
             # Update magnetic fields H_x, H_y
             self.H_x = self.H_x - self.dt / self.dy * (self.E_z[:, 1:] - self.E_z[:, :-1])
             self.H_y = self.H_y + self.dt / self.dx * (self.E_z[1:, :] - self.E_z[:-1, :])
