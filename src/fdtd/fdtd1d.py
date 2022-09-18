@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-#import tqdm
+import tqdm
 from matplotlib.animation import FuncAnimation
 
 # Usage:
@@ -48,7 +48,7 @@ class fdtd1d(object):
         self.x = np.arange(0, Nx, 1)
         self.Dx = np.arange(0.5, Nx-0.5, 1)
 
-    def run(self, n_iter = 180):
+    def run(self, n_iter = 180, verbose = False):
         # Main FDTD Loops
         dt = self.dt
         dx = self.dx
@@ -56,8 +56,7 @@ class fdtd1d(object):
         sig = self.sig
         source = self.source
         
-        #for n in tqdm.trange(n_iter):
-        for n in range(n_iter):    
+        for n in tqdm.trange(n_iter, disable = np.logical_not(verbose)):   
             # Update magnetic field
             self.H_z = self.H_z - dt / dx * (self.E_y[1:] - self.E_y[:-1])     
     
