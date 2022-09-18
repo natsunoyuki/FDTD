@@ -13,6 +13,6 @@ pip install git+https://github.com/natsunoyuki/FDTD
 import fdtd
 
 fdtd2d_tmz = fdtd.fdtd2d_tmz()
-fdtd2d_tmz.run()
+fdtd2d_tmz.run(n_iter = 50000, initiate_pulse = True)
 fdtd2d_tmz.plot_E()
 ```
